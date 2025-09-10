@@ -1,6 +1,4 @@
 import { useState } from "react";
-
-import { useState } from "react";
 import Particles from "@/components/Particles";
 
 export default function Index() {
