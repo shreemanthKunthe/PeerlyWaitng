@@ -11,7 +11,7 @@ export default function Particles({
   className,
   color = "rgba(255,255,255,0.35)",
   speed = 0.15,
-  density = 0.035,
+  density = 1,
 }: Props) {
   const ref = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -41,12 +41,17 @@ export default function Particles({
     };
 
     const resize = () => {
-      width = canvas.clientWidth;
-      height = canvas.clientHeight;
+      const rect = canvas.getBoundingClientRect();
+      width = Math.max(1, rect.width);
+      height = Math.max(1, rect.height);
+      // reset transform before resizing/scaling
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       canvas.width = Math.floor(width * DPR);
       canvas.height = Math.floor(height * DPR);
-      ctx.scale(DPR, DPR);
-      const target = Math.min(140, Math.max(24, Math.floor((width * height) / 10000 * density)));
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      // density scaled to viewport: baseline ~ (area / 25000)
+      const base = (width * height) / 25000;
+      const target = Math.max(40, Math.min(220, Math.round(base * density)));
       seed(target);
     };
 
@@ -87,5 +92,5 @@ export default function Particles({
     };
   }, [color, density, speed]);
 
-  return <canvas ref={ref} className={className} />;
+  return <canvas ref={ref} className={(className ? className + " " : "") + "w-full h-full"} />;
 }
