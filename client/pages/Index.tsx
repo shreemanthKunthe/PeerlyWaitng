@@ -27,10 +27,15 @@ export default function Index() {
             Introducing Peerly
           </h1>
           <p className="mt-5 max-w-[56rem] text-[13px] sm:text-sm md:text-[15px] text-white/85">
-            Peerly connects students and professionals through peer-to-peer sessions. Share your skills, get help when you're stuck, and grow in a community that believes knowledge gets stronger when it's shared.
+            Peerly connects students and professionals through peer-to-peer
+            sessions. Share your skills, get help when you're stuck, and grow in
+            a community that believes knowledge gets stronger when it's shared.
           </p>
           {/* full-width rule */}
-          <div aria-hidden className="mt-6 h-px bg-white/20 w-screen relative left-1/2 -ml-[50vw]" />
+          <div
+            aria-hidden
+            className="mt-6 h-px bg-white/20 w-screen relative left-1/2 -ml-[50vw]"
+          />
         </section>
 
         {/* Form */}
@@ -38,7 +43,10 @@ export default function Index() {
           <form onSubmit={onSubmit} className="w-full max-w-[542px]">
             <div className="space-y-10">
               <div>
-                <label htmlFor="name" className="block text-[15px] font-medium mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-[15px] font-medium mb-2"
+                >
                   Name
                 </label>
                 <input
@@ -51,7 +59,10 @@ export default function Index() {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-[15px] font-medium mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-[15px] font-medium mb-2"
+                >
                   Email
                 </label>
                 <input
@@ -78,16 +89,26 @@ export default function Index() {
 
         {/* Bottom section like design */}
         <section className="mt-28 md:mt-36 lg:mt-40">
-          <p className="text-white text-[18px] md:text-[20px] font-medium">Signuptojointhecommunity</p>
+          <p className="text-white text-[18px] md:text-[20px] font-medium">
+            Signuptojointhecommunity
+          </p>
           <div className="mt-3 h-px bg-white/20 w-screen relative left-1/2 -ml-[50vw]" />
 
           <div className="mt-6 flex items-center justify-between text-[11px] text-white/70">
             <div>© 2025 Peerly</div>
             <nav className="flex items-center gap-6">
-              <a className="hover:text-white" href="#">Blog</a>
-              <a className="hover:text-white" href="#">Jobs</a>
-              <a className="hover:text-white" href="#">Terms of Use</a>
-              <a className="hover:text-white" href="#">Privacy Policy</a>
+              <a className="hover:text-white" href="#">
+                Blog
+              </a>
+              <a className="hover:text-white" href="#">
+                Jobs
+              </a>
+              <a className="hover:text-white" href="#">
+                Terms of Use
+              </a>
+              <a className="hover:text-white" href="#">
+                Privacy Policy
+              </a>
             </nav>
           </div>
           <div className="mt-6 h-px bg-white/20 w-screen relative left-1/2 -ml-[50vw]" />
