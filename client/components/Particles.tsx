@@ -5,6 +5,9 @@ interface Props {
   color?: string; // rgba color
   speed?: number; // base speed
   density?: number; // particles per 10k px^2
+  breathe?: boolean; // vertical breathing motion
+  amplitude?: number; // px
+  frequency?: number; // cycles per second
 }
 
 export default function Particles({
@@ -12,6 +15,9 @@ export default function Particles({
   color = "rgba(255,255,255,0.35)",
   speed = 0.15,
   density = 1,
+  breathe = true,
+  amplitude = 18,
+  frequency = 0.08,
 }: Props) {
   const ref = useRef<HTMLCanvasElement | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -56,7 +62,11 @@ export default function Particles({
     };
 
     const step = () => {
+      const now = performance.now();
+      const offsetY = breathe ? Math.sin(now * 0.001 * Math.PI * 2 * frequency) * amplitude : 0;
       ctx.clearRect(0, 0, width, height);
+      ctx.save();
+      ctx.translate(0, offsetY);
       for (const p of particles) {
         // motion
         p.x += p.vx;
@@ -77,6 +87,7 @@ export default function Particles({
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
       }
+      ctx.restore();
       ctx.globalAlpha = 1;
       rafRef.current = requestAnimationFrame(step);
     };
@@ -90,7 +101,7 @@ export default function Particles({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       ro.disconnect();
     };
-  }, [color, density, speed]);
+  }, [color, density, speed, breathe, amplitude, frequency]);
 
   return <canvas ref={ref} className={(className ? className + " " : "") + "w-full h-full"} />;
 }
