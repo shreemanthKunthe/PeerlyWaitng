@@ -17,7 +17,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <div className="relative min-h-screen bg-black">
-        <Particles className="fixed inset-0 z-0 pointer-events-none" color="rgba(255,255,255,0.28)" speed={0.18} density={1.2} />
+        <Particles className="fixed inset-0 z-20 pointer-events-none" color="rgba(255,255,255,0.42)" speed={0.14} density={2.4} />
         <Toaster />
         <Sonner />
         <BrowserRouter>
