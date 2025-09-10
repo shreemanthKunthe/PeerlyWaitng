@@ -16,7 +16,7 @@ import Particles from "@/components/Particles";
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <div className="relative min-h-screen bg-black">
+      <div className="relative min-h-screen bg-black animate-fade-in-soft">
         <Particles className="fixed inset-0 z-20 pointer-events-none" color="rgba(255,255,255,0.42)" speed={0.14} density={2.2} amplitude={20} frequency={0.06} />
         <Toaster />
         <Sonner />
