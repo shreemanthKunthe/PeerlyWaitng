@@ -18,7 +18,7 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
       {/* Purple glow like the design */}
-      <div className="pointer-events-none absolute -top-56 -left-56 h-[90vh] w-[90vw] max-w-[1400px] rounded-full opacity-90 [background:radial-gradient(80%_70%_at_25%_20%,rgba(124,58,237,0.6),rgba(79,70,229,0.35)_45%,transparent_70%)]" />
+      <div className="pointer-events-none absolute -top-56 -left-56 h-[90vh] w-[90vw] max-w-[1400px] rounded-full opacity-90 [background:radial-gradient(80%_70%_at_25%_20%,rgba(124,58,237,0.6),rgba(79,70,229,0.35)_45%,transparent_70%)] animate-float-slow will-change-transform" />
       <main className="relative z-10 max-w-[1440px] mx-auto px-8 sm:px-12 lg:px-16">
         {/* Hero */}
         <section className="pt-14 sm:pt-16 md:pt-20 lg:pt-24">
