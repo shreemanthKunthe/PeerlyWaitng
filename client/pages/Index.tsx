@@ -1,119 +1,97 @@
 import { useState } from "react";
 
 export default function Index() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-  });
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((p) => ({ ...p, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log("Form submitted:", formData);
-    setIsSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: "", email: "" });
-    }, 3000);
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 2500);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-800 flex flex-col items-center justify-center px-4 py-8 relative overflow-hidden">
-      {/* Background pattern/texture overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-indigo-900/30 to-purple-800/50"></div>
-      
-      {/* Main content */}
-      <div className="relative z-10 w-full max-w-md mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16 lg:mb-20">
-          <h1 className="text-white font-instrument text-4xl lg:text-5xl xl:text-6xl font-medium mb-6 lg:mb-8 leading-tight">
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      {/* Purple glow like the design */}
+      <div className="pointer-events-none absolute -top-40 -left-40 h-[70vh] w-[70vw] max-w-[1200px] rounded-full opacity-80 [background:radial-gradient(90%_70%_at_20%_20%,rgba(124,58,237,0.55),rgba(49,46,129,0.45)_40%,transparent_70%)]" />
+
+      <main className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
+        {/* Hero */}
+        <section className="pt-16 md:pt-20 lg:pt-24">
+          <h1 className="text-[44px] sm:text-[64px] md:text-[88px] lg:text-[104px] leading-[0.95] font-semibold tracking-tight">
             Introducing Peerly
           </h1>
-          <p className="text-white/90 font-instrument text-base lg:text-lg max-w-lg mx-auto leading-relaxed px-4">
+          <p className="mt-6 max-w-3xl text-[13px] sm:text-sm md:text-[15px] text-white/80">
             Peerly connects students and professionals through peer-to-peer sessions. Share your skills, get help when you're stuck, and grow in a community that believes knowledge gets stronger when it's shared.
           </p>
-        </div>
+          <div className="mt-6 border-t border-white/20" />
+        </section>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-12 mb-20">
-          {/* Name field */}
-          <div className="relative">
-            <label 
-              htmlFor="name" 
-              className="block text-white font-instrument text-base font-medium mb-2"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              required
-              className="w-full bg-transparent border-0 border-b border-white text-white font-instrument text-base py-3 px-0 focus:outline-none focus:border-white/80 placeholder-white/50"
-              placeholder=""
-            />
-          </div>
+        <section className="mt-16 md:mt-20 lg:mt-28">
+          <form onSubmit={onSubmit} className="w-full max-w-[542px]">
+            <div className="space-y-10">
+              <div>
+                <label htmlFor="name" className="block text-[15px] font-medium mb-2">
+                  Name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={onChange}
+                  required
+                  className="w-full bg-transparent border-0 border-b border-white outline-none focus:border-white/80 text-[15px] py-3 placeholder-white/50"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-[15px] font-medium mb-2">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={onChange}
+                  required
+                  className="w-full bg-transparent border-0 border-b border-white outline-none focus:border-white/80 text-[15px] py-3 placeholder-white/50"
+                />
+              </div>
+            </div>
 
-          {/* Email field */}
-          <div className="relative">
-            <label 
-              htmlFor="email" 
-              className="block text-white font-instrument text-base font-medium mb-2"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-              className="w-full bg-transparent border-0 border-b border-white text-white font-instrument text-base py-3 px-0 focus:outline-none focus:border-white/80 placeholder-white/50"
-              placeholder=""
-            />
-          </div>
-
-          {/* Submit button */}
-          <div>
             <button
               type="submit"
-              disabled={isSubmitted}
-              className="text-white font-instrument text-base font-medium underline hover:text-white/80 transition-colors duration-200 disabled:text-white/60"
+              disabled={submitted}
+              className="mt-10 underline text-[16px] font-medium text-white hover:text-white/80 transition-colors disabled:text-white/60"
             >
-              {isSubmitted ? "Submitted!" : "Submit"}
+              {submitted ? "Submitted" : "Submit"}
             </button>
-          </div>
-        </form>
+          </form>
+        </section>
 
-        {/* Footer */}
-        <div className="text-center">
-          <p className="text-white/80 font-instrument text-sm font-medium tracking-wide">
-            Signuptojointhecommunity
-          </p>
-          <div className="mt-8 text-white/60 font-instrument text-xs">
-            © 2025 Peerly
-          </div>
-        </div>
-      </div>
+        {/* Bottom section like design */}
+        <section className="mt-28 md:mt-36 lg:mt-40">
+          <p className="text-white text-[18px] md:text-[20px] font-medium">Signuptojointhecommunity</p>
+          <div className="mt-3 border-t border-white/20" />
 
-      {/* Decorative elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
-      <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-400/10 rounded-full blur-2xl"></div>
-      <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-indigo-400/10 rounded-full blur-xl"></div>
+          <div className="mt-6 flex items-center justify-between text-[11px] text-white/70">
+            <div>© 2025 Peerly</div>
+            <nav className="flex items-center gap-6">
+              <a className="hover:text-white" href="#">Blog</a>
+              <a className="hover:text-white" href="#">Jobs</a>
+              <a className="hover:text-white" href="#">Terms of Use</a>
+              <a className="hover:text-white" href="#">Privacy Policy</a>
+            </nav>
+          </div>
+          <div className="mt-6 border-t border-white/20" />
+        </section>
+      </main>
     </div>
   );
 }
