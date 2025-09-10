@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+import { useState } from "react";
+import Particles from "@/components/Particles";
+
 export default function Index() {
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [submitted, setSubmitted] = useState(false);
