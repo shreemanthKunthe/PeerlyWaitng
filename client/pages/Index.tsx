@@ -153,7 +153,7 @@ export default function Index() {
             </div>
           )}
           {hasJoined && (
-            <div id="message" className="mt-6 text-center text-white font-semibold text-xl">
+            <div id="message" className="mt-6 text-center font-instrument-sans  text-white font-semibold text-xl">
               {message || "✅ You’re already on the waiting list with this email."}
             </div>
           )}
