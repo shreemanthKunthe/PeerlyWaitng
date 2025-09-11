@@ -1,18 +1,78 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { assertGoogleScriptUrl } from "../lib/config";
 
 export default function Index() {
   const [formData, setFormData] = useState({ name: "", email: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [hasJoined, setHasJoined] = useState(false);
+
+  const normalizeEmail = (v: string) => (v || "").trim().toLowerCase();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((p) => ({ ...p, [name]: value }));
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  // On mount, check if user has already joined (same browser)
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("waitlisted_email");
+    if (storedEmail) {
+      setHasJoined(true);
+      setFormData((p) => ({ ...p, email: storedEmail }));
+      setMessage("✅ You’re already on the waiting list with this email.");
+    }
+  }, []);
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 2500);
+    setMessage("");
+    setSubmitting(true);
+
+    try {
+      const url = assertGoogleScriptUrl();
+      if (!url) throw new Error("Missing VITE_GOOGLE_SCRIPT_URL or VITE_GAS_URL env var.");
+
+      const normalized = normalizeEmail(formData.email);
+      const localKey = `waitlisted:${normalized}`;
+
+      // Prevent duplicate submission from the same browser
+      if (localStorage.getItem(localKey)) {
+        setMessage("✅ You’re already on the waiting list with this email.");
+        setHasJoined(true);
+        return;
+      }
+
+      const params = new URLSearchParams();
+      params.append("email", normalized);
+      if (formData.name) params.append("name", formData.name.trim());
+      params.append("timestamp", new Date().toISOString());
+
+      const res = await fetch(url, {
+        method: "POST",
+        body: params,
+      });
+
+      const data = await res.json();
+      if (data.result === "success" || data.result === "exists" || data.result === "duplicate") {
+        if (data.result === "success") {
+          setMessage("✅ You’ve been added to the waiting list!");
+        } else {
+          setMessage("✅ You’re already on the waiting list with this email.");
+        }
+        // Mark as waitlisted locally to prevent re-submissions
+        localStorage.setItem(localKey, "1");
+        localStorage.setItem("waitlisted_email", normalized);
+        setHasJoined(true);
+        setFormData((p) => ({ ...p, email: normalized }));
+      } else {
+        throw new Error(data.error || "Unknown error");
+      }
+    } catch (err: any) {
+      setMessage(`❌ Error: ${err?.message || "Submission failed"}`);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -39,6 +99,7 @@ export default function Index() {
 
         {/* Form */}
         <section className="mt-16 md:mt-20 lg:mt-24">
+          {!hasJoined && (
           <form onSubmit={onSubmit} className="w-full max-w-[542px]">
             <div className="space-y-10">
               <div>
@@ -78,12 +139,24 @@ export default function Index() {
 
             <button
               type="submit"
-              disabled={submitted}
+              disabled={submitting}
               className="mt-10 underline text-[16px] font-medium text-white hover:text-white/80 transition-colors disabled:text-white/60"
             >
-              {submitted ? "Submitted" : "Submit"}
+              {submitting ? "Submitting…" : "Submit"}
             </button>
           </form>
+          )}
+          {/* Message */}
+          {message && !hasJoined && (
+            <div id="message" className={`mt-4 text-sm ${message.startsWith("✅") ? "text-green-400" : "text-red-400"}`}>
+              {message}
+            </div>
+          )}
+          {hasJoined && (
+            <div id="message" className="mt-6 text-center text-white font-semibold text-xl">
+              {message || "✅ You’re already on the waiting list with this email."}
+            </div>
+          )}
         </section>
 
         {/* Bottom section like design */}
